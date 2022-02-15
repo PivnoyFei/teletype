@@ -1,0 +1,14 @@
+<!-- templates/includes/posts/header.html -->
+<!DOCTYPE html>
+{% load static %}
+
+<header>
+  <nav class="navbar navbar-light" style="background-color: black">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'posts:index' %}">
+        <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
+        <span style="color:red">Ya</span><span style="color:white;">tube</a>
+      </a>
+    </div>
+  </nav>      
+</header>
