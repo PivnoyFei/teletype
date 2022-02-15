@@ -1,7 +1,4 @@
-<h1 align="center">
-  <a target="_blank" href="https://github.com/PivnoyFei/yatube_project/">Проект-<span style="color:red">Ya</span>tube
-  </a>
-</h1>
+<h1 align="center"><a target="_blank" href="https://github.com/PivnoyFei/yatube_project/">Проект-yatube</a></h1>
 
 ## Описание
 Социальная сеть
