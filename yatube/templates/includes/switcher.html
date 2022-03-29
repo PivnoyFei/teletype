@@ -1,0 +1,68 @@
+{% with request.resolver_match.view_name as view_name %}
+
+{% if user.is_authenticated %}
+  <div class="wrapper row my-3 ">
+    <ul class="nav justify-content-center">
+      <li class="p3 nav-item">
+        <a class="slide_from_left btn btn-lg btn-secondary {% if view_name  == "posts:index" %}disabled btn-danger{% endif %}" href="{% url 'posts:index' %}"> Главная
+        </a>
+      </li>
+      <li class="p3 nav-item">
+        <a class="slide_from_right btn btn-lg btn-secondary {% if view_name  == "posts:follow_index" %}disabled btn-danger{% endif %}" href="{% url 'posts:follow_index' %}"> Авторы
+        </a>
+      </li>
+      <li class="p3 nav-item">
+        <a class="slide_from_left btn btn-lg btn-secondary {% if view_name  == "posts:group_index" %}disabled btn-danger{% endif %}" href="{% url 'posts:group_index' %}"> Каналы
+        </a>
+      </li>
+    </ul>
+  </div>
+{% endif %}
+
+{% if user.is_authenticated %}
+  <a class="span-shadow d-grid gap-2 sm-auto mb-3"  href="{% url 'posts:post_create' %}">
+    <button class="btn" style="background:white;">Новая запись</button>
+  </a>
+{% endif %}
+
+{% endwith %}
+<style>
+  .p3 a {
+    border-radius: 50px;
+    margin-left: 5px;
+    color: #fff;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+  }
+  .p3 a::after {
+    content: "";
+    background: #ecf0f1;
+    position: absolute;
+    z-index: -1;
+    padding: 0.85em 0.75em;
+    display: block;
+  }
+  .p3 a[class^="slide"]::after {
+    transition: all 0.35s;
+  }
+  .p3 a[class^="slide"]:hover::after {
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    transition: all 0.35s;
+  }
+  .p3 a.slide_from_left::after {
+    top: 0;
+    bottom: 0;
+    left: -100%;
+    right: 100%;
+  }
+  .p3 a.slide_from_right::after {
+    top: 0;
+    bottom: 0;
+    left: 100%;
+    right: -100%;
+  }
+</style>

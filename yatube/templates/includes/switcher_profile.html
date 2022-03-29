@@ -1,0 +1,35 @@
+{% with request.resolver_match.view_name as view_name %}
+
+{% if user.is_authenticated %}
+
+  <div class="shadow p-1 mb-1 bg-body rounded">
+    <div class="container">
+      <div class="row">
+        <aside class="li1 col-12 col-md-3">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+              <a class="nav-link" href="{% url 'posts:group_create' %}">
+                Управление группами
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="nav-link {% if view_name  == "users:profile_edit" %}disabled{% endif %}" href="{% url 'users:profile_edit' user %}">
+                Редактирование профиля
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="nav-link {% if view_name  == "users:profile_social_edit" %}disabled{% endif %}" href="{% url 'users:profile_social_edit' user%}">
+                Ссылки на социальные сети
+              </a>
+            </li>
+            <li class="list-group-item">
+              <a class="nav-link {% if view_name  == "users:password_change" %}disabled{% endif %}" href="{% url 'users:password_change' %}">
+                Изменить пароль
+              </a>
+            </li>
+          </ul>
+        </aside>
+
+{% endif %}
+
+{% endwith %}

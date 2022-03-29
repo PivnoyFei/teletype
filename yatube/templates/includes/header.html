@@ -1,14 +1,61 @@
-<!-- templates/includes/posts/header.html -->
-<!DOCTYPE html>
 {% load static %}
+{% with request.resolver_match.view_name as view_name %}
 
 <header>
-  <nav class="navbar navbar-light" style="background-color: black">
-    <div class="container">
-      <a class="navbar-brand" href="{% url 'posts:index' %}">
-        <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="">
-        <span style="color:red">Ya</span><span style="color:white;">tube</a>
-      </a>
-    </div>
-  </nav>      
+  <head>
+    <link rel="stylesheet" href="{% static 'css/search-header.css' %}">
+    <nav class="navbar navbar-expand-md navbar-dark bg-black fixed-top shadow">
+      <div class="container bg-black">
+        <a class="navbar-brand" href="{% url 'posts:index' %}">
+          <img src="{% static 'img/logo.png' %}" width="30" height="30" class="d-inline-block align-top" alt="Логотип">
+          <span style="color:red; font-size: 22px;">Ya</span><span style="color:white; font-size: 22px;"=>tube</a>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar1">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+      <div class="collapse navbar-collapse" id="navbar1">
+
+        <div class="navbar-collapse justify-content-center" id="navbar1">
+          <div class="d1 col-md-5 w-100">
+            <form action="{% url 'posts:search' %}" method="get" accept-charset="utf-8">
+              <div class="input-group">
+                <input type="text" class="form-control border-right-0" name="search" placeholder="Поиск по каналам и @автору" type="search" aria-label="Search">
+                <div class="input-group-append">
+                  <button class="btn btn-outline-primary border-left-0" type="submit"><img src="{% static 'img/search.svg' %}" height="18" width="18"></button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+          <ul class="nav nav-pills justify-content-end">
+            {% if user.is_authenticated %}
+              <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'posts:profile' and user == author %}disabled{% endif %}" href="{% url 'posts:profile' user.username %}">{{ user.username }}</a></li>
+              <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:logout' %}disabled{% endif %}" href="{% url 'users:logout' %}">Выйти</a></li>
+            {% else %}
+              <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:signup' %}disabled{% endif %}" href="{% url 'users:signup' %}">Зарегистрироваться</a></li>
+              <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:login' %}disabled{% endif %}"href="{% url 'users:login' %}">Войти</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </head>
+  <style>
+    .navbar {
+      height: 40px;
+    }
+    @media (max-width: 767px) {
+      .navbar-brand {
+        position: absolute;
+        width: 100%;
+        left: 0;
+        text-align: center;
+      }
+      .navbar-toggler {
+        z-index:3;
+      }
+    }
+  </style>
 </header>
+{% endwith %}

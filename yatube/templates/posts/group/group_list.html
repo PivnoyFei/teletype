@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load cache %}
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}Записи сообщества {{ group.title }}{% endblock title %}
+{% block content %}
+<nav>
+
+    <div class="navbar-collapse justify-content-center" style="margin-top:-21px;">
+      {% if group.image %}
+        {% thumbnail group.image "1546x423" crop="center" as im %}
+          <img class="image" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" align="center">
+        {% endthumbnail %}
+      {% endif %}
+    </div>
+  <nav class="navbar navbar-expand">
+    <div class="navbar-collapse justify-content-center" style="margin-top:-21px;">
+      {% if group.avatar %}
+        {% thumbnail group.avatar "100x100" crop="center" as im %}
+          <img class="avatar" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" align="center">
+        {% endthumbnail %}
+      {% endif %}
+    </div>
+  </nav>
+
+
+    <div class="navbar-collapse justify-content-center" style="margin-top:20px;">
+      <h1 class="text-center">{{ group.title }}</h1>
+    </div>
+    <div class="navbar-collapse justify-content-center">
+      <h6 class="text-center">{{ group.description }}</h6>
+    </div>
+
+    <div class="indent_group"></div>
+
+    <ul class="nav justify-content-center">
+      <li class="nav-item">{{ group.posts.count }}<small> {{ post_all }} </small></li>
+      <li>&nbsp; &bull; &nbsp;</li>
+      <li class="nav-item" method="post" role="button">
+        <a {% if group.group_following.count %}href="{% url 'posts:group_following_list' group.slug %}"{% endif %}>{{ group.group_following.count }}<small> {{ follow_all }} </small></a>
+      </li>
+    </ul>
+
+    <div class="indent_group"></div>
+
+    <ul class="nav justify-content-center">
+      {% if user != group.administrator %}
+        {% if following %}
+          <li class="p1 nav-item"><a class="btn btn-lg btn-secondary" href="{% url 'posts:group_unfollow' group.slug %}" role="button"> Отписаться </a></li>
+        {% else %}
+          <li class="p1 nav-item"><a class="btn btn-lg btn-danger" href="{% url 'posts:group_follow' group.slug %}" role="button"> Подписаться </a></li>
+        {% endif %}
+      {% endif %}
+    </ul>
+
+    <div class="indent_group"></div>
+
+  {% cache 1 sidebar %}
+    {% if user.is_authenticated %}
+      <a class="span-shadow d-grid gap-2 sm-auto mb-3"  href="{% url 'posts:post_create' %}">
+        <button class="btn" style="background:white;">Новая запись</button>
+      </a>
+    {% endif %}
+    {% for post in page_obj %}
+      {% include 'includes/post_item.html' %}
+    {% endfor %}
+  {% endcache %}
+
+  <style>
+    .avatar {
+      max-width: 100%;
+      height: auto;
+    }
+    .image {
+      max-width: 100%;
+      height: auto;
+    }
+    .indent_group {
+      margin-top:7px;
+    }
+    .p1 a {
+      color: #fff;
+      border-radius: 50px;
+    }
+  </style>
+</nav>
+
+  {% include "includes/paginator.html" %}
+{% endblock content %}

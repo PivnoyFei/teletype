@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Подписки на каналы{% endblock title %}
+{% block header %}Подписки на каналы{% endblock header %}
+
+{% block content %}
+
+    {% include 'includes/switcher.html' %}
+    {% for post in page_obj %}
+      {% include 'includes/post_item.html' %}
+    {% endfor %}
+
+  {% include "includes/paginator.html" %}
+{% endblock content %}

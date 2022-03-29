@@ -1,5 +1,10 @@
-<!-- templates/includes/posts/footer.html -->
-<!DOCTYPE html>
-<footer class="border-top text-center py-3">
-  <p>© 2021 Copyright <span style="color:red">Ya</span>tube</p>    
-</footer>
+<div class="footer">
+  <div class="border-top text-center py-3">
+    <p>© {{ year }} Copyright <span style="color:red">Ya</span>tube</p>
+    <a href="{% url 'about:author' %}">Об авторе</a>
+    &nbsp; &bull; &nbsp;
+    <a href="{% url 'about:tech' %}">Технологии</a>
+    &nbsp; &bull; &nbsp;
+    <a href="{% url 'about:contact' %}">Обратная связь</a>
+  </div>
+</div>

@@ -1,4 +1,3 @@
-<!-- templates/base.html -->
 <!DOCTYPE html>
 {% load static %}
 
@@ -6,24 +5,30 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="{% static 'img/fav/fav.ico' %}" type="image"">
+    <link rel="icon" href="{% static 'img/fav/fav.ico' %}" type="image">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static ' img/fav/apple-touch-icon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/fav/favicon-32x32.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/fav/favicon-16x16.png' %}">
     <meta name="msapplication-TileColor" content="#000">
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    {% block title %}{% endblock title %}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <title>{% block title %}{% endblock title %}</title>
   </head>
   <body>
     <header>
       {% include 'includes/header.html' %}
     </header>
-    <main class="container py-5">
+    <main class="container py-5" style="margin-top:19px;">
+      <h1 class="text-center">{% block header %}{% endblock header %}</h1>
+      <h1>{% block caption %}{% endblock caption %}</h1>
       {% block content %}{% endblock content %}
     </main>
     <footer>
       {% include 'includes/footer.html' %}
     </footer>
   </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </html>
+<style>
+</style>

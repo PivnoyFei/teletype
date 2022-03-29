@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load user_filters %}
+
+{% block title %}
+  {% if is_edit %}
+    Редактирование профиля {{ user.get_full_name }}
+  {% else %}
+    Ссылки на социальные сети {{ user.get_full_name }}
+  {% endif %}
+{% endblock title %}
+
+{% block content %}
+
+  {% include 'includes/switcher_profile.html' %}
+
+      <article class="col-12 col-md-9">
+        <div class="card-body">
+          <form action="." method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+              {% if is_edit %}
+                {% for field in social_form %}
+                  {% include 'includes/template_form.html' %}
+                {% endfor %}
+              {% else %}
+                {% for field in user_form %}
+                  {% include 'includes/template_form.html' %}
+                {% endfor %}
+                {% for field in profile_form %}
+                  {% include 'includes/template_form.html' %}
+                {% endfor %}
+              {% endif %}
+
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="btn btn-primary">
+                Сохранить
+              </button>
+            </div>
+          </form>
+        </article>
+      </div>
+    </div>
+  </div>
+{% endblock %}

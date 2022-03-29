@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Технологии{% endblock %}
+{% block content %}
+
+<div class="row shadow p-3 mb-3 bg-body rounded">
+  <h1>Вот что я умею</h1>
+
+  <aside class="col-12 col-md-3">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <a href="https://www.python.org/">
+          <img src="{% static 'img/python.png' %}" height="20" width="20" align="top">
+          Python
+        </a>
+      </li>
+      <li class="list-group-item">
+        <a href="https://www.djangoproject.com/">
+          <img src="{% static 'img/django.png' %}" height="20" width="20" align="top">
+          Django
+        </a>
+      </li>
+      <li class="list-group-item">
+        <a href="https://getbootstrap.com/">
+          <img src="{% static 'img/bootstrap-logo.svg' %}" height="20" width="25" align="top">
+          Bootstrap
+        </a>
+      </li>
+      <li class="list-group-item">
+        <a href="https://github.com/PivnoyFei">
+          <img src="{% static 'img/github.svg' %}" height="20" width="25" align="top">
+          GitHub
+        </a>
+      </li>
+    </ul>
+  </aside>
+
+  <article class="col-12 col-md-9">
+    <p>Текст страницы "Технологии"</p>
+  </article>
+</div>
+{% endblock %} 

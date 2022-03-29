@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}
+  {% if is_edit %}
+    Подписались
+  {% else %}
+    Подписались на группу
+  {% endif %}
+{% endblock title %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+  <div class="col-md-8 p-5">
+    <div class="shadow bg-body rounded">
+      <div class="card-header text-center">
+        <h3>
+          {% if is_edit %}
+            Подписались
+          {% else %}
+            Подписались на группу
+          {% endif %}
+        </h3>
+      </div>
+      <nav class="p-3 mb-3 bg-body rounded">
+        <ul class="li1 list-group" style="list-style: none;">
+          {% for obj in page_obj %}
+
+            <li>
+              {% if obj.user.profile.avatar %}
+                {% thumbnail obj.user.profile.avatar "30x30" crop="center" as im %}
+                  <img class="avatar" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" align="left">
+                {% endthumbnail %}
+              {% else %}
+                <img src="{% static 'img/person-fill.svg' %}" width="30" height="30" align="left" alt="Аватар">
+              {% endif %}
+              <a href="{% url 'posts:profile' obj.user %}">
+                <div>&nbsp; {{ obj.user.get_full_name }}</div>
+                <div>&nbsp; {{ obj.user }}</div>
+              </a>
+            </li>
+      
+          {% endfor %}
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+<style>
+  .li1 img {
+    position: relative;
+    top: 3px;
+  }
+</style>
+
+  {% include "includes/paginator.html" %}
+{% endblock content %}

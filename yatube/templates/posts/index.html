@@ -1,22 +1,17 @@
-<!-- templates/posts/index.html -->
-<!DOCTYPE html>
 {% extends 'base.html' %}
+{% load cache %}
 
-{% block title %}
-  <title>Последние обновления на сайте</title>
-{% endblock title %}
-
+{% block title %}Последние обновления на сайте{% endblock title %}
+{% block header %}Последние обновления на сайте{% endblock header %}
 {% block content %}
-  <h1>Последние обновления на сайте</h1>
-  {% for post in posts %}
-    <ul>
-      <li>Автор: {{ post.author.get_full_name }}</li>
-      <li>Дата публикации: {{ post.pub_date|date:"d E Y" }}</li>
-    </ul>
-    <p>{{ post.text }}</p>
-    {% if post.group %}
-      <a href="{% url 'posts:group_list' post.group.slug %}">все записи группы</a>
-    {% endif %}
-    {% if not forloop.last %}<hr>{% endif %}
-  {% endfor %}
+
+  {% cache 1 sidebar %}
+    {% include 'includes/switcher.html' %}
+
+    {% for post in page_obj %}
+      {% include 'includes/post_item.html' %}
+    {% endfor %}
+  {% endcache %}
+
+  {% include "includes/paginator.html" %}
 {% endblock content %}

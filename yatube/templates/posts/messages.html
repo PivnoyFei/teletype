@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}час с {{}}{% endblock title %}
+
+{% block content %}
+
+  {% if chats.count == 0 %}
+    <div class="panel panel-body">{% trans "Нет ни одного начатого диалога" %}</div>
+  {% endif %}
+  {% for chat in chats %}
+  {% endfor %}
+
+{% endblock content %}

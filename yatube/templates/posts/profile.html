@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load cache %}
+{% load static %}
+{% load thumbnail %}
+
+{% block title %}Профиль {{ author.get_full_name }}{% endblock title %}
+{% block content %}
+<nav>
+
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+  <nav class="navbar navbar-expand">
+    <div class="navbar-collapse justify-content-center" style="margin-top:35px;">
+      {% if author.profile.avatar %}
+        {% thumbnail author.profile.avatar "100x100" crop="center" as im %}
+          <img class='avatar' src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" align="center">
+        {% endthumbnail %}
+      {% else %}
+        <img src="{% static 'img/person-fill.svg' %}" width="100" height="100" align="center" alt="Аватар">
+      {% endif %}
+    </div>
+  </nav>
+    <div class="navbar-collapse justify-content-center" style="margin-top:50px;">
+      <h1 class="text-center">{{ author.get_full_name }} - {{ author.username }}</h1>
+    </div>
+    <div class="navbar-collapse justify-content-center">
+      <h6 class="text-center">{{ author.profile.bio }}</h6>
+    </div>
+
+  {% if author and user == author %}
+    <div class="multi-button">
+      <a href="{% url 'users:profile_edit' user %}" class="a1 btn"> Настройки</a>
+      <a href="{% url 'posts:group_create' %}" class="a2 btn"><img src="{% static 'img/three-dots.svg' %}" width="20" height="20"></a>
+    </div>
+  {% endif %}
+
+  <div class="indent_profile"></div>
+
+  <ul class="nav justify-content-center">
+    <li class="nav-item">{{ author.posts.count }}<small> {{ post_all }} </small></li>
+    <li>&nbsp; &bull; &nbsp;</li>
+    <li class="nav-item" method="post" role="button">
+      <a {% if author.following.count %}href="{% url 'posts:following_list' author.username %}"{% endif %}>{{ author.following.count }}<small> {{ following_all }} </small></a>
+    </li>
+    <li>&nbsp; &bull; &nbsp;</li>
+    <li class="nav-item" method="post" role="button">
+      <a {% if author.follower.count %}href="{% url 'posts:follower_list' author.username %}"{% endif %}>{{ author.follower.count }}<small> {{ follower_all }} </small></a>
+    </li>
+  </ul>
+
+  <div class="indent_profile"></div>
+
+  <ul class="nav justify-content-center">
+    {# <li class="p1 nav-item"><a class="slide_from_left btn btn-lg btn-secondary" href="" role="button"> Сообщение </a></li> #}
+    &ensp;
+    {% if user != author %}
+      {% if following %}
+        <li class="p1 nav-item"><a class="slide_from_right btn btn-lg btn-secondary" href="{% url 'posts:profile_unfollow' author.username %}" role="button"> Отписаться </a></li>
+      {% else %}
+        <li class="p1 nav-item"><a class="slide_from_right btn btn-lg btn-danger" href="{% url 'posts:profile_follow' author.username %}" role="button"> Подписаться </a></li>
+      {% endif %}
+    {% endif %}
+  </ul>
+
+  <div style="margin-top:7px;"></div>
+
+  <ul class="li1 list-group" style="list-style: none; margin-left: 9px;">
+    {% if author.profile.location %}
+      <li><img src="{% static 'img/house-door.svg' %}"> Город: {{ author.profile.location }}</li>
+    {% endif %}
+    {% if author.profile.job %}
+      <li><img src="{% static 'img/house-door.svg' %}"> Место работы: {{ author.profile.job }}</li>
+    {% endif %}
+  </ul>
+
+    <div class="collapse" id="nav10">
+      <ul class="li1 list-group" style="list-style: none; margin-left: 9px;">
+        {% if author.profile.age %}
+          <li><img src="{% static 'img/person-badge.svg' %}"> Лет: {{ author.profile.age }}</li>
+        {% endif %}
+        {% if author.profile.birth_date %}
+          <li><img src="{% static 'img/gift.svg' %}"> День рождения: {{ author.profile.birth_date }}</li>
+        {% endif %}
+        {% if author.profile.number %}
+          <li><img src="{% static 'img/house-door.svg' %}"> Телефон: {{ author.profile.number }}</li>
+        {% endif %}
+        {% if author.profile.vk %}
+          <li><img src="{% static 'img/vk.svg' %}"> vk: <a href="https://vk.com/{{ author.profile.vk }}">{{ author.profile.vk }}</li>
+        {% endif %}
+        {% if author.profile.telegram %}
+          <li><img src="{% static 'img/telegram.svg' %}"> telegram: <a href="https://t.me/{{ author.profile.telegram }}">{{ author.profile.telegram }}</li>
+        {% endif %}
+        {% if author.profile.github %}
+          <li><img src="{% static 'img/github.svg' %}"> github: <a href="https://github.com/{{ author.profile.github }}">{{ author.profile.github }}</li>
+        {% endif %}
+      </ul>
+    </div>
+    <nav class="nav-item navbar-light">
+      <div class="container-fluid">
+        <a class="nav-item" type="button" data-bs-toggle="collapse" data-bs-target="#nav10" aria-controls="nav10" aria-expanded="false">
+          <img src="{% static 'img/exclamation-circle-fill.svg' %}"> Подробная информация </a>
+      </div>
+    </nav>
+
+  {% cache 1 sidebar %}
+    <div class="border-top py-3">
+      {% if user.is_authenticated %}
+        <a class="span-shadow d-grid gap-2 sm-auto mb-3"  href="{% url 'posts:post_create' %}">
+          <button class="btn" style="background:white;">Новая запись</button>
+        </a>
+      {% endif %}
+      {% if page_obj %}
+        {% for post in page_obj %}
+          {% include 'includes/post_item.html' %}
+        {% endfor %}
+      {% else %}
+        <h3>{{ author.get_full_name }} пока не опубликовал ни одного поста</h3>
+      {% endif %}
+    </div>
+  {% endcache %}
+  
+</nav>
+<style>
+  .btn {
+    margin-left: 2px;
+    margin-right: 2px;
+  }
+</style>
+{% include "includes/paginator.html" %}
+{% endblock content %}

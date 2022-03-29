@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  {% if is_edit %}
+    Редактировать группу {{ group }}
+  {% else %}
+    Создать группу
+  {% endif %}
+{% endblock title %}
+
+{% block content %}
+  {% load user_filters %}
+  {% include 'includes/switcher_group.html' %}
+
+            <article class="col-12 col-md-9">
+              <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+
+                  {% csrf_token %}
+                  {% for field in form %}
+                    {% include 'includes/template_form.html' %}
+                  {% endfor %}
+
+                  <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary">
+                      {% if is_edit %}
+                        Сохранить
+                      {% else %}
+                        Создать
+                      {% endif %}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+
+{% endblock content %}
