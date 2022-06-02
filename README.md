@@ -20,9 +20,12 @@
 - Установите и активируйте виртуальное окружение
 ```python -m venv venv```
 - Установите зависимости из файла requirements.txt
-```pip install -r requirements.txt``` 
+```pip install -r requirements.txt```
+- Выполнить миграции:
+```python manage.py makemigrations```
+```python manage.py migrate```
 - В папке с файлом manage.py выполните команду:
-```python3 manage.py runserver```
+```python manage.py runserver```
 ## Автор
 <a target="_blank" href="https://github.com/PivnoyFei/">Смелов Илья</a>
 <p><a>

@@ -1,7 +1,8 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
 from .models import Group, Post, Comment
-from users.models import Profile
+from users.models import CustomUser
 from about.models import Contact
 
 
@@ -23,13 +24,27 @@ class CommentAdmin(admin.ModelAdmin):
     empty_value_display = "-пусто-"
 
 
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    list_display = (
-        "user", "bio", "age", "birth_date", "location", "avatar"
+@admin.register(CustomUser)
+class CustomUserAdmin(UserAdmin):
+    model = CustomUser
+
+    add_fieldsets = (
+        *UserAdmin.add_fieldsets,
+        (
+            'Custom fields',
+            {
+                'fields': (
+                    "username",
+                    "first_name",
+                    "last_name",
+                    "email",
+                    "gender",
+                    "birth_date",
+                    "groups",
+                )
+            }
+        )
     )
-    search_fields = ("user",)
-    empty_value_display = "-пусто-"
 
 
 @admin.register(Contact)

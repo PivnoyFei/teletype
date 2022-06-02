@@ -7,6 +7,7 @@ from django.contrib.auth.views import (LoginView, LogoutView,
                                        PasswordResetView)
 from django.urls import path
 
+from users.views import SingUPView
 from . import views
 
 app_name = 'users'
@@ -20,7 +21,7 @@ urlpatterns = [
         views.profile_social_edit,
         name='profile_social_edit'
     ),
-    path('signup/', views.SignUp.as_view(), name='signup'),
+    path('signup/', SingUPView.as_view(), name='signup'),
     path('login/',
          LoginView.as_view(template_name='users/login.html'),
          name='login'),

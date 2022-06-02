@@ -1,7 +1,8 @@
-from django.contrib.auth import get_user_model
 from django.db import models
+from django.contrib.auth import get_user_model
+from django.urls import reverse
 
-User = get_user_model()
+CustomUser = get_user_model()
 
 
 class Group(models.Model):
@@ -38,7 +39,7 @@ class Group(models.Model):
         help_text="Загрузите аватарку"
     )
     administrator = models.ForeignKey(
-        User, blank=True, null=True,
+        CustomUser, blank=True, null=True,
         on_delete=models.CASCADE,
         related_name="group_admin",
         verbose_name='Администратор'
@@ -54,16 +55,19 @@ class Group(models.Model):
 
 class Post(models.Model):
     text = models.TextField(
-        verbose_name="Текст поста",
-        help_text="Введите текст поста"
+        "Текст", help_text="Введите текст поста"
     )
     pub_date = models.DateTimeField(
         auto_now_add=True,
         db_index=True,
         verbose_name="Дата публикации"
     )
+    Time_updated = models.DateTimeField(
+        "Дата обновления", auto_now=True
+    )
+    is_published = models.BooleanField(default=True)
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE,
+        CustomUser, on_delete=models.CASCADE,
         related_name="posts",
         verbose_name="Автор"
     )
@@ -86,14 +90,31 @@ class Post(models.Model):
     edit = models.BooleanField(
         default=False, verbose_name="Отредактирован"
     )
+    tags = models.ForeignKey(
+        "Tag",
+        on_delete=models.PROTECT,
+        blank=True,
+        null=True,
+        verbose_name="Тег"
+    )
 
     class Meta:
-        ordering = ("-pub_date",)
+        ordering = ("-Time_updated", "-pub_date",)
         verbose_name = "Пост"
         verbose_name_plural = "Посты"
 
     def __str__(self):
         return self.text[:15]
+
+    def get_absolute_url(self):
+        return reverse("post", kwargs={"post_id": self.pk})
+
+
+class Tag(models.Model):
+    name = models.CharField(max_length=50, db_index=True)
+
+    def __str__(self):
+        return self.name
 
 
 class Comment(models.Model):
@@ -107,7 +128,7 @@ class Comment(models.Model):
         help_text="Комментарий поста"
     )
     author = models.ForeignKey( 
-        User, on_delete=models.CASCADE,
+        CustomUser, on_delete=models.CASCADE,
         related_name="comments",
         verbose_name="Автор" 
     )
@@ -137,8 +158,16 @@ class Like(models.Model):
         Post, on_delete=models.CASCADE, related_name="like"
     )
     users = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_like"
+        CustomUser, on_delete=models.CASCADE, related_name="user_like"
     )
+
+    class Meta:
+        constraints = (
+            models.UniqueConstraint(
+                fields=('post', 'users',),
+                name='unique_like'
+            ),
+        )
 
 
 class Dislike(models.Model):
@@ -146,19 +175,27 @@ class Dislike(models.Model):
         Post, on_delete=models.CASCADE, related_name="dislike"
     )
     users = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="user_dislike"
+        CustomUser, on_delete=models.CASCADE, related_name="user_dislike"
     )
+
+    class Meta:
+        constraints = (
+            models.UniqueConstraint(
+                fields=('post', 'users',),
+                name='unique_dislike'
+            ),
+        )
 
 
 class Follow(models.Model):
     user = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         related_name="follower",
         verbose_name='Подписчик'
     )
     author = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         related_name="following",
         verbose_name='Автор'
@@ -175,7 +212,7 @@ class Follow(models.Model):
 
 class FollowGroup(models.Model):
     user = models.ForeignKey(
-        User,
+        CustomUser,
         on_delete=models.CASCADE,
         related_name="group_follower",
         verbose_name='Подписчик'
@@ -198,10 +235,10 @@ class FollowGroup(models.Model):
 
 class Message(models.Model):
     from_user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="from_user"
+        CustomUser, on_delete=models.CASCADE, related_name="from_user"
     )
     to_user = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="to_user"
+        CustomUser, on_delete=models.CASCADE, related_name="to_user"
     )
     message = models.TextField()
     created = models.DateTimeField(auto_now_add=True)

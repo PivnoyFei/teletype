@@ -7,11 +7,13 @@
 {% block content %}
 <nav>
 
+  <div alt="" class="u-border-8 u-border-white u-image u-image-circle u-image-1"></div>
+
   <link rel="stylesheet" href="{% static 'css/profile.css' %}">
   <nav class="navbar navbar-expand">
     <div class="navbar-collapse justify-content-center" style="margin-top:35px;">
-      {% if author.profile.avatar %}
-        {% thumbnail author.profile.avatar "100x100" crop="center" as im %}
+      {% if author.avatar %}
+        {% thumbnail author.avatar "100x100" crop="center" as im %}
           <img class='avatar' src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" align="center">
         {% endthumbnail %}
       {% else %}
@@ -19,11 +21,11 @@
       {% endif %}
     </div>
   </nav>
-    <div class="navbar-collapse justify-content-center" style="margin-top:50px;">
-      <h1 class="text-center">{{ author.get_full_name }} - {{ author.username }}</h1>
+    <div class="fontsize navbar-collapse justify-content-center" style="margin-top:50px;">
+      <h1 class="text text-center">{{ author.get_full_name }} - {{ author.username }}</h1>
     </div>
     <div class="navbar-collapse justify-content-center">
-      <h6 class="text-center">{{ author.profile.bio }}</h6>
+      <h6 class="text-center">{{ author.bio }}</h6>
     </div>
 
   {% if author and user == author %}
@@ -64,33 +66,33 @@
   <div style="margin-top:7px;"></div>
 
   <ul class="li1 list-group" style="list-style: none; margin-left: 9px;">
-    {% if author.profile.location %}
-      <li><img src="{% static 'img/house-door.svg' %}"> Город: {{ author.profile.location }}</li>
+    {% if author.location %}
+      <li><img src="{% static 'img/house-door.svg' %}"> Город: {{ author.location }}</li>
     {% endif %}
-    {% if author.profile.job %}
-      <li><img src="{% static 'img/house-door.svg' %}"> Место работы: {{ author.profile.job }}</li>
+    {% if author.job %}
+      <li><img src="{% static 'img/house-door.svg' %}"> Место работы: {{ author.job }}</li>
     {% endif %}
   </ul>
 
     <div class="collapse" id="nav10">
       <ul class="li1 list-group" style="list-style: none; margin-left: 9px;">
-        {% if author.profile.age %}
-          <li><img src="{% static 'img/person-badge.svg' %}"> Лет: {{ author.profile.age }}</li>
+        {% if author.age %}
+          <li><img src="{% static 'img/person-badge.svg' %}"> Лет: {{ author.age }}</li>
         {% endif %}
-        {% if author.profile.birth_date %}
-          <li><img src="{% static 'img/gift.svg' %}"> День рождения: {{ author.profile.birth_date }}</li>
+        {% if author.birth_date %}
+          <li><img src="{% static 'img/gift.svg' %}"> День рождения: {{ author.birth_date }}</li>
         {% endif %}
-        {% if author.profile.number %}
-          <li><img src="{% static 'img/house-door.svg' %}"> Телефон: {{ author.profile.number }}</li>
+        {% if author.number %}
+          <li><img src="{% static 'img/house-door.svg' %}"> Телефон: {{ author.number }}</li>
         {% endif %}
-        {% if author.profile.vk %}
-          <li><img src="{% static 'img/vk.svg' %}"> vk: <a href="https://vk.com/{{ author.profile.vk }}">{{ author.profile.vk }}</li>
+        {% if author.vk %}
+          <li><img src="{% static 'img/vk.svg' %}"> vk: <a href="https://vk.com/{{ author.vk }}">{{ author.vk }}</li>
         {% endif %}
-        {% if author.profile.telegram %}
-          <li><img src="{% static 'img/telegram.svg' %}"> telegram: <a href="https://t.me/{{ author.profile.telegram }}">{{ author.profile.telegram }}</li>
+        {% if author.telegram %}
+          <li><img src="{% static 'img/telegram.svg' %}"> telegram: <a href="https://t.me/{{ author.telegram }}">{{ author.telegram }}</li>
         {% endif %}
-        {% if author.profile.github %}
-          <li><img src="{% static 'img/github.svg' %}"> github: <a href="https://github.com/{{ author.profile.github }}">{{ author.profile.github }}</li>
+        {% if author.github %}
+          <li><img src="{% static 'img/github.svg' %}"> github: <a href="https://github.com/{{ author.github }}">{{ author.github }}</li>
         {% endif %}
       </ul>
     </div>
@@ -108,14 +110,17 @@
           <button class="btn" style="background:white;">Новая запись</button>
         </a>
       {% endif %}
+    </div>
+
       {% if page_obj %}
-        {% for post in page_obj %}
-          {% include 'includes/post_item.html' %}
-        {% endfor %}
+        <section class="grid">
+          {% for post in page_obj %}
+            {% include 'includes/post_item.html' %}
+          {% endfor %}
+        </section>
       {% else %}
         <h3>{{ author.get_full_name }} пока не опубликовал ни одного поста</h3>
       {% endif %}
-    </div>
   {% endcache %}
   
 </nav>
@@ -125,5 +130,7 @@
     margin-right: 2px;
   }
 </style>
+<script>
+</script>
 {% include "includes/paginator.html" %}
 {% endblock content %}

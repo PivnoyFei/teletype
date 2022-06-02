@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Об авторе проекта{% endblock %}
 {% block content %}
 <div class="shadow p-3 mb-3 bg-body rounded">
@@ -7,6 +8,60 @@
     Тут я размещу информацию о себе, используя свои умения верстать.
     Картинки, блоки, элементы бустрап. А может быть, просто напишу несколько абзацев текста. 
   </p>
+
+  <ul class="social-icons-1">
+    <li><a href="#"><img src="{% static 'img/vk.svg' %}" alt=""/></i></a></li>
+    <li><a href="https://t.me/PivnoyFey"><img src="{% static 'img/telegram.svg' %}" alt=""/></i></a></li>
+    <li><a href="https://github.com/PivnoyFei"><img src="{% static 'img/github.svg' %}" alt=""/></i></a></li>
+  </ul>
+  
   </footer>
 </div>
+<style>
+  .social-icons-1 {
+    padding: 0;
+    list-style: none;
+    margin: 10px;
+}
+.social-icons-1 li {
+    display: inline-block;
+    position: relative;
+    font-size: 24px;
+}
+.social-icons-1 i,
+.social-icons-1 img {
+    color: #fff;
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    width: 24px;
+    height: 24px;
+    text-align:center;
+    transition: all 0.3s ease-out;
+}
+.social-icons-1 a {
+    display: inline-block;
+}
+.social-icons-1 a:before {
+    transform: scale(1);
+    content: "";
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    display: block;
+    background: linear-gradient(45deg, #337AB7, #2d6b9f);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.3s ease-out;
+}
+.social-icons-1 a:hover:before {
+    transform: scale(0);
+    transition: all 0.3s ease-in;
+}
+.social-icons-1 a:hover i,
+.social-icons-1 a:hover img {
+    transform: scale(1.8);
+    color: #337AB7;
+    transition: all 0.3s ease-in;
+}
+</style>
 {% endblock %} 

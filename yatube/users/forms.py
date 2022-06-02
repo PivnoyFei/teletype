@@ -1,44 +1,42 @@
 from django.forms import ModelForm
 from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from captcha.fields import CaptchaField
 
-from .models import User, Profile
-
-User = get_user_model()
+from users.models import CustomUser
 
 
-class CreationForm(UserCreationForm):
+class CustomUserCreationForm(UserCreationForm):
     captcha = CaptchaField()
     class Meta(UserCreationForm.Meta):
-        model = User
-        fields = ('first_name', 'last_name', 'username', 'email')
+        model = CustomUser
+        fields = ("first_name", "last_name", "username", "email", "gender", "birth_date")
 
 
-class UserEditForm(ModelForm):
+class CustomUserChangeForm(UserChangeForm):
     class Meta:
-        model = User
-        fields = ('first_name', 'last_name')
+        model = CustomUser
+        fields = ("username", "first_name", "last_name", "email", "gender", "birth_date")
 
 
 class ProfileForm(ModelForm):
     class Meta:
-        model = Profile
+        model = CustomUser
         fields = (
-            "bio", "location", "image", "avatar", "age",
-            "birth_date", "job", "number"
+            "first_name", "last_name", "bio", "location",
+            "avatar", "age", "birth_date", "job", "number"
         )
         labels = {
             "bio": "Биография", "location": "Город",
             "age": "Полных лет", "birth_date": "День рождения",
             "job": "Место работы", "number": "Номер телефона",
-            "image": "Картинка", "avatar": "Изображение"
+            "avatar": "Изображение"
         }
 
 
 class SocialForm(ModelForm):
     class Meta:
-        model = Profile
+        model = CustomUser
         fields = (
             "github", "telegram", "vk"
         )

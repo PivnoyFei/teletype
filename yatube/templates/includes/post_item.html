@@ -1,68 +1,94 @@
 {% load static %}
 {% load thumbnail %}
+{% load user_filters %}
 
-  <nav class="shadow p-3 mb-3 bg-body rounded" style="box-shadow: nav:hover 200px 0 0 0 rgba(0,0,0,.1) inset;">
-      <ul>
-        {% if user != author %}
-          <li>
-            Автор:
-            {% if post.author.profile.avatar %}
-              {% thumbnail post.author.profile.avatar "20x20" crop="center" as im %}
-                <img class='avatar' src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-              {% endthumbnail %}
-            {% else %}
-                <img src="{% static 'img/person-fill.svg' %}" alt="Аватар">
-            {% endif %}
-            <a href="{% url 'posts:profile' post.author %}">{{ post.author.get_full_name }}</a></li>
-        {% endif %}
-        <li>Дата публикации: {{ post.pub_date|date:"d E Y" }}</li>
-      </ul>
-      {% thumbnail post.image "100x100" crop="center" as im %}
-        <img class='images' src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-      {% endthumbnail %}
-      <p>
-        {{ post.text|linebreaks }}
-        {% if post.edit %}
-          <small class="text-muted">(Отредактировано)</small>
-        {% endif %}
-      </p>
 
-    <div class="li1 navbar">
-      <ul class="list-group" style="list-style: none;">
-        {% if post %}
-          <li><a href="{% url 'posts:post_detail' post.id %}">Подробная информация</a></li>
-        {% endif %}
-        {% if post.group %}
-          <li><text>Канал: </text><a href="{% url 'posts:group' post.group.slug %}">{{ post.group.title }}</a></li>
-        {% endif %}
-      </ul>
-
-      {% csrf_token %}
-      <div class="nav col-md-7">
-        <a class="span-shadow" href="{% url 'posts:post_detail' post.id %}" role="button">
-          <button class="btn btn-sm">
-            {{ post.comments.count }}
-            <img src="{% static 'img/chat-left.svg' %}" alt="Комметариев">
-          </button>
-        </a>
-        <a class="span-shadow" href="{% url 'posts:add_like' post.id %}" method="post" role="button">
-          <button type="submit" class="btn btn-sm">
-            {{ post.like.count }}
-              <img src="{% static 'img/heart.svg' %}" alt="like">
-          </button>
-        </a>
-        <a class="span-shadow" href="{% url 'posts:add_dislike' post.id %}" method="post" role="button">
-          <button type="submit" class="btn btn-sm">
-            {{ post.dislike.count }}
-              <img src="{% static 'img/heartbreak.svg' %}" alt="dislike">
-          </button>
-        </a>
+  <article class="grid-item">
+    <a href="{% url 'posts:post_detail' post.id %}">
+      <div class="image img-fluid">
+        {% thumbnail post.image "600x600" crop="center" as im %}
+          <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endthumbnail %}
       </div>
-    </div>
-  </nav>
+    </a>
+      <div class="info">
+          <h6>
+            <div class="text-muted px-3 bottom-1 position-absolute end-0" type="button" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ post.pub_date }}">
+              {{ post.pub_date|date:"H:i" }}</div>
+            <div class="info-text">
+              {% if user != author %}
+                  {% if post.author.avatar %}
+                    {% thumbnail post.author.avatar "20x20" crop="center" as im %}
+                      <img class='avatar' src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                    {% endthumbnail %}
+                  {% else %}
+                    <img src="{% static 'img/person-fill.svg' %}" alt="Аватар">
+                  {% endif %}
+                  <a href="{% url 'posts:profile' post.author %}">{{ post.author.get_full_name }}</a>
+              {% endif %}
+            </div>
+            <div style="margin-top: 5px">
+              {% if post.group %}
+                <text>Канал: </text><a href="{% url 'posts:group' post.group.slug %}">{{ post.group.title }}</a>
+              {% endif %}
+            </div>
+          </h6>
+          
+            <p>
+              {{ post.text|linebreaks|truncatechars:200 }}
+              {% if post.edit %}<small class="text-muted">(Отредактировано)</small>{% endif %}
+            </p>
+
+            {% for Like in post.like.get_queryset %}
+              {% if user == Like.users %}
+                <div id="Like" class="Like">Like</div>
+              {%endif%}
+            {%endfor%}
+
+          </div>
+          {% csrf_token %}
+          <div class="px-3 bottom-1 position-absolute" style="margin-top: -40px">
+              <a class="span-shadow" href="{% url 'posts:post_detail' post.id %}" role="button">
+                <button class="btn btn-sm">
+                  {{ post.comments.count }}
+                  <img src="{% static 'img/chat-left.svg' %}" alt="Комметариев">
+                </button>
+              </a>
+
+                  <a class="span-shadow" href="{% url 'posts:add_like' post.id %}" method="post" role="button">
+                    <button type="submit" class="btn btn-sm">
+                      {{ post.like.count }}
+                        <img src="{% static 'img/heart.svg' %}" alt="like">
+                    </button>
+                  </a>
+
+              <a class="span-shadow" href="{% url 'posts:add_dislike' post.id %}" method="post" role="button">
+                <button type="submit" class="btn btn-sm">
+                  {{ post.dislike.count }}
+                    <img src="{% static 'img/heartbreak.svg' %}" alt="dislike">
+                </button>
+              </a>
+          </div>
+      </div>
+  </article>
+
   <style>
-    .btn {
-      margin-left: 2px;
-      margin-right: 2px;
-    }
+  /* Кол-во блоков на разных экранах */
+  @media only screen and (max-width: 1200px) {
+      .grid {
+          grid-template-columns: 1fr 1fr 1fr;
+      }
+  }
+  @media only screen and (max-width: 900px) {
+      .grid {
+          grid-template-columns: 1fr 1fr;
+      }
+  }
+  @media only screen and (max-width: 600px) {
+      .grid {
+          grid-template-columns: 1fr;
+      }
+  }
   </style>
+  <script>
+  </script>

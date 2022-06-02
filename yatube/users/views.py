@@ -4,11 +4,11 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from django.core.mail import send_mail
 
-from .forms import CreationForm, ProfileForm, UserEditForm, SocialForm
+from .forms import CustomUserCreationForm, ProfileForm, SocialForm
 
 
-class SignUp(CreateView):
-    form_class = CreationForm
+class SingUPView(CreateView):
+    form_class = CustomUserCreationForm
     success_url = reverse_lazy('posts:index')
     template_name = 'users/signup.html'
 
@@ -16,23 +16,17 @@ class SignUp(CreateView):
 @login_required
 def profile_edit(request, username):
     if request.method == 'POST':
-        user_form = UserEditForm(
-            instance=request.user, data=request.POST
-        )
-        profile_form = ProfileForm(
-            instance=request.user.profile,
+        user_form = ProfileForm(
+            instance=request.user,
             data=request.POST,
             files=request.FILES
         )
-        if user_form.is_valid() and profile_form.is_valid():
+        if user_form.is_valid():
             user_form.save()
-            profile_form.save()
             return redirect("posts:profile", request.user.username)
     else:
-        user_form = UserEditForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user.profile)
-        context = {"user_form": user_form,
-                   "profile_form": profile_form}
+        user_form = ProfileForm(instance=request.user)
+        context = {"user_form": user_form}
         return render(request, 'posts/profile_edit.html', context)
 
 
@@ -40,7 +34,7 @@ def profile_edit(request, username):
 def profile_social_edit(request, username):
     if request.method == 'POST':
         social_form = SocialForm(
-            instance=request.user.profile,
+            instance=request.user,
             data=request.POST,
             files=request.FILES
         )
@@ -48,16 +42,16 @@ def profile_social_edit(request, username):
             social_form.save()
             return redirect("posts:profile", request.user.username)
     else:
-        social_form = SocialForm(instance=request.user.profile)
+        social_form = SocialForm(instance=request.user)
         context = {"is_edit": True,
                    "social_form": social_form}
         return render(request, 'posts/profile_edit.html', context)
 
 
 # send_mail(
-#    'Subject here',
-#    'Here is the message.',
- #   'from@example.com',
- #   ['to@example.com'],
+#    'Код подтверждения',
+#    'Ваш код подтверждения:.',
+ #   'from@example.fake',
+ #   ['to@example.fake'],
  #   fail_silently=False,
 #)

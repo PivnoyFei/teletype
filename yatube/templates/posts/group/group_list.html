@@ -62,9 +62,11 @@
         <button class="btn" style="background:white;">Новая запись</button>
       </a>
     {% endif %}
-    {% for post in page_obj %}
-      {% include 'includes/post_item.html' %}
-    {% endfor %}
+      <section class="grid">
+        {% for post in page_obj %}
+          {% include 'includes/post_item.html' %}
+        {% endfor %}
+      </section>
   {% endcache %}
 
   <style>

@@ -8,9 +8,11 @@
   {% cache 1 sidebar %}
     {% include 'includes/switcher.html' %}
 
-    {% for post in page_obj %}
-      {% include 'includes/post_item.html' %}
-    {% endfor %}
+    <section class="grid">
+      {% for post in page_obj %}
+        {% include 'includes/post_item.html' %}
+      {% endfor %}
+    </section>
   {% endcache %}
 
   {% include "includes/paginator.html" %}

@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
 
 from .forms import PostForm, CommentForm, GroupForm
-from .models import Group, Post, User, Like, Dislike, Follow, FollowGroup, Comment
+from .models import Group, Post, CustomUser, Like, Dislike, Follow, FollowGroup, Comment
 
 
 def count_all(count):
@@ -22,7 +22,7 @@ def search(request):
     search_query = request.GET.get("search")
     if search_query and search_query != ' ':
         if search_query[0] == "@":
-            user = User.objects.filter(username=search_query[1:])
+            user = CustomUser.objects.filter(username=search_query[1:])
             if not user:
                 return redirect("posts:index")
             return redirect(
@@ -105,7 +105,7 @@ def group(request, slug):
 
 
 def profile(request, username):
-    author = get_object_or_404(User, username=username)
+    author = get_object_or_404(CustomUser, username=username)
     author_list = author.posts.all()
     post_all = count_all(author_list.count())
     paginator = Paginator(author_list, settings.COUNT_POSTS)
@@ -130,11 +130,22 @@ def post_detail(request, post_id):
     form = CommentForm(request.POST or None)
     comments = post.comments.all()
     author = post.author
-    following = Follow.objects.filter(
-        user__username=request.user, author=author
-    )
+    user = request.user
+    if request.user.username:
+        like = Like.objects.filter(post_id=post_id, users=user)
+        dislike = Dislike.objects.filter(post_id=post_id, users=user)
+        following = Follow.objects.filter(
+            user__username=user, author=author
+        )
+    else:
+        like = None
+        dislike = None
+        following = None
     context = {"post": post,
                "form": form,
+               "like": like,
+               "dislike": dislike,
+               "author": author,
                "following": following,
                "comments": comments}
     return render(request, "posts/post_detail.html", context)
@@ -244,7 +255,7 @@ def comment_edit(request, post_id, comment_id):
 
 @login_required
 def following_list(request, username):
-    author = get_object_or_404(User, username=username)  
+    author = get_object_or_404(CustomUser, username=username)  
     page_obj = author.following.all()
     context = {"is_edit": True, "page_obj": page_obj, "author": author}
     return render(request, "posts/follow/following_list.html", context)
@@ -252,7 +263,7 @@ def following_list(request, username):
 
 @login_required
 def follower_list(request, username):
-    author = get_object_or_404(User, username=username)  
+    author = get_object_or_404(CustomUser, username=username)  
     page_obj = author.follower.all()
     context = {"page_obj": page_obj, "author": author}
     return render(request, "posts/follow/follower_list.html", context)
@@ -272,7 +283,7 @@ def follow_index(request):
 
 @login_required
 def profile_follow(request, username):
-    author = get_object_or_404(User, username=username)
+    author = get_object_or_404(CustomUser, username=username)
     if author != request.user:
         Follow.objects.get_or_create(user=request.user, author=author)
     return redirect("posts:profile", username)

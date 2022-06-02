@@ -6,7 +6,7 @@
 {% block title %}{{post.text|truncatechars:15}}{% endblock title %}
 {% block content %}
 
-  <div class="shadow p-1 mb-1 bg-body rounded">
+  <div class="shadow mb-1 bg-body rounded">
       <div class="container">
         <div class="row">
           <aside class="li1 col-12 col-md-3">
@@ -41,10 +41,10 @@
 
           {% csrf_token %}
           <article class="col-12 col-md-9">
+            {% if post.image %}
+              <div class="image"><img class="image" src="{{ post.image.url }}"></div>
+            {% endif %}
             <div class="card-body">
-            {% thumbnail post.image "100x100" crop="center" as im %}
-              <img class='images' src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-            {% endthumbnail %}
             <p>
               {{ post.text|linebreaks }}
               {% if post.edit %}
@@ -55,7 +55,7 @@
             <div class="nav">
               <div class="nav justify-content-left">
                 
-              {% if user == post.author %}
+              {% if post.author %}
                 <a type="button" class="span-shadow" href="{% url 'posts:post_edit' post.id %}">
                   <button class="btn btn-sm">Редактировать</button>
                 </a>
@@ -67,18 +67,38 @@
                   <img src="{% static 'img/chat-left.svg' %}">
                 </button>
               </a>
-              <a class="span-shadow" href="{% url 'posts:add_like' post.id %}" method="post" role="button">
-                <button type="submit" class="btn btn-sm">
-                  {{ post.like.count }}
-                  <img src="{% static 'img/heart.svg' %}" alt="Лайк">
-                </button>
-              </a>
-              <a class="span-shadow" href="{% url 'posts:add_dislike' post.id %}" method="post" role="button">
-                <button type="submit" class="btn btn-sm">
-                  {{ post.dislike.count }}
-                  <img src="{% static 'img/heartbreak.svg' %}" alt="Лайк">
-                </button>
-              </a>
+              {% if like %}
+                <a class="span-shadow" href="{% url 'posts:add_like' post.id %}" method="post" role="button">
+                  <button type="submit" class="btn btn-sm">
+                    {{ post.like.count }}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-heart-fill" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z" fill="red"/>
+                    </svg>
+                  </button>
+                </a>
+              {% else %}
+                <a class="span-shadow" href="{% url 'posts:add_like' post.id %}" method="post" role="button">
+                  <button type="submit" class="btn btn-sm">
+                    {{ post.like.count }}
+                    <img src="{% static 'img/heart.svg' %}" alt="Лайк">
+                  </button>
+                </a>
+              {% endif %}
+              {% if dislike %}
+                <a class="span-shadow" href="{% url 'posts:add_dislike' post.id %}" method="post" role="button">
+                  <button type="submit" class="btn btn-sm">
+                    {{ post.dislike.count }}
+                    <img src="{% static 'img/heartbreak-fill.svg' %}" alt="Лайк">
+                  </button>
+                </a>
+              {% else %}
+                <a class="span-shadow" href="{% url 'posts:add_dislike' post.id %}" method="post" role="button">
+                  <button type="submit" class="btn btn-sm">
+                    {{ post.dislike.count }}
+                    <img src="{% static 'img/heartbreak.svg' %}" alt="Лайк">
+                  </button>
+                </a>
+              {% endif %}
               </div>
             </div>
 
@@ -90,10 +110,24 @@
       </div>
   </div>
   <style>
+    .grid-shadow {
+      border-radius: 10px;
+    }
     .btn {
       margin-left: 2px;
       margin-right: 2px;
     }
+    .image img  {
+      border-radius: 3px;
+      transition: transform 280ms ease-in-out;
+      display: block;
+      width: 101%;
+      height: auto;
+      max-height: 968px;
+      max-width: 968px;
+      object-fit: cover;    
+    }
   </style>
+
 
 {% endblock content %}
