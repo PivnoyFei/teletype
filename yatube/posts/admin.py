@@ -1,9 +1,9 @@
+from about.models import Contact
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-
-from .models import Group, Post, Comment
 from users.models import CustomUser
-from about.models import Contact
+
+from .models import Comment, Group, Post
 
 
 @admin.register(Post)

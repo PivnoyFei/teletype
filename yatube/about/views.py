@@ -1,7 +1,8 @@
-from .models import Contact
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, CreateView
+from django.views.generic import CreateView, TemplateView
+
 from .forms import ContactForm
+from .models import Contact
 
 
 class AboutAuthorView(TemplateView):

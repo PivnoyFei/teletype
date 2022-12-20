@@ -1,8 +1,7 @@
-from django.urls import reverse_lazy
-from django.views.generic import CreateView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
-from django.core.mail import send_mail
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
 
 from .forms import CustomUserCreationForm, ProfileForm, SocialForm
 
@@ -46,12 +45,3 @@ def profile_social_edit(request, username):
         context = {"is_edit": True,
                    "social_form": social_form}
         return render(request, 'posts/profile_edit.html', context)
-
-
-# send_mail(
-#    'Код подтверждения',
-#    'Ваш код подтверждения:.',
- #   'from@example.fake',
- #   ['to@example.fake'],
- #   fail_silently=False,
-#)

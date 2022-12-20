@@ -2,14 +2,18 @@
 {% load user_filters %}
 {% csrf_token %}
 
-  <div class="form-group my-3" aria-required="{% if field.field.required %}"true"{% else %}"false"{% endif %}">
+  <div class="form-group mb-3" aria-required="{% if field.field.required %}"true"{% else %}"false"{% endif %}">
     <label for="{{ field.id_for_label }}">
       {{ field.label }}
       {% if field.field.required %}<span class="required text-danger">*</span>{% endif %}
     </label>
     {{ field|addclass:"form-control" }}
+    {% if field.label == "Пароль" %}<a href="#" class="password-control" onclick="return show_hide_password1(this);"></a>{% endif %}
+    {% if field.label == "Подтверждение пароля" %}<a href="#" class="password-contro2" onclick="return show_hide_password2(this);"></a>{% endif %}
     {% if field.help_text %}
-      <small id="{{ field.id_for_label }}-help" class="form-text text-muted"> {{ field.help_text|safe }} </small>
+      <small id="{{ field.id_for_label }}-help" class="form-text text-muted">
+        {{ field.help_text|safe }}
+      </small>
     {% endif %}
   </div>
 

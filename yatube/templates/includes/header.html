@@ -29,9 +29,11 @@
 
           <ul class="nav nav-pills justify-content-end">
             {% if user.is_authenticated %}
+              <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'ski_resort:game' %}disabled{% endif %}" href="{% url 'ski_resort:game' %}">Игра</a></li>
               <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'posts:profile' and user == author %}disabled{% endif %}" href="{% url 'posts:profile' user.username %}">{{ user.username }}</a></li>
               <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:logout' %}disabled{% endif %}" href="{% url 'users:logout' %}">Выйти</a></li>
             {% else %}
+              <li class="nav-item active"><a class="nav-link link-light" href="{% url 'users:login' %}">Игра</a></li>
               <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:signup' %}disabled{% endif %}" href="{% url 'users:signup' %}">Зарегистрироваться</a></li>
               <li class="nav-item active"><a class="nav-link link-light {% if view_name  == 'users:login' %}disabled{% endif %}"href="{% url 'users:login' %}">Войти</a></li>
             {% endif %}

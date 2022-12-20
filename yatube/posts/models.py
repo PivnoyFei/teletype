@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 from django.urls import reverse
 
 CustomUser = get_user_model()
@@ -34,7 +34,7 @@ class Group(models.Model):
     avatar = models.ImageField(
         verbose_name="Аватарка",
         blank=True,
-        null=True, 
+        null=True,
         upload_to="group/",
         help_text="Загрузите аватарку"
     )
@@ -127,10 +127,10 @@ class Comment(models.Model):
         verbose_name="Комментарий",
         help_text="Комментарий поста"
     )
-    author = models.ForeignKey( 
+    author = models.ForeignKey(
         CustomUser, on_delete=models.CASCADE,
         related_name="comments",
-        verbose_name="Автор" 
+        verbose_name="Автор"
     )
     text = models.TextField(
         verbose_name="Текст коментария",

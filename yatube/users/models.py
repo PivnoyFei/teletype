@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 
 
 class CustomUser(AbstractUser):
@@ -16,26 +16,26 @@ class CustomUser(AbstractUser):
         blank=True,
         null=True,
         max_length=100,
-        verbose_name = "Город",
+        verbose_name="Город",
     )
     avatar = models.ImageField(
         verbose_name="Аватарка",
         blank=True,
-        null=True, 
+        null=True,
         upload_to="avatar/",
-        help_text="Загрузите аватарку"
+        help_text="Загрузите аватарку",
     )
     job = models.CharField(
         blank=True,
         null=True,
         max_length=100,
-        verbose_name = "Место работы"
+        verbose_name="Место работы",
     )
-    number =  models.CharField(
+    number = models.CharField(
         blank=True,
         null=True,
         max_length=15,
-        verbose_name = "Телефон"
+        verbose_name="Телефон",
     )
     github = models.CharField(max_length=100, null=True, blank=True)
     telegram = models.CharField(max_length=100, null=True, blank=True)

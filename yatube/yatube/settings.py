@@ -10,7 +10,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
+    'localhost',
 ]
 
 INSTALLED_APPS = [
@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'about.apps.AboutConfig',
     'core.apps.CoreConfig',
-    'rest_framework',
+    'ski_resort',
     'sorl.thumbnail',
     'django_cleanup',
     'captcha'
@@ -120,3 +120,17 @@ EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
 
 COUNT_POSTS = 10
+
+HOTEL = (110000, 60)  # Отель: стоймость, вместительность
+RESTAURAN = (80000, 45)  # Ресторан
+LOW_TRACK = (30000, 10000, 20)  # Трасса для новичков: стоймость, содержание, вместительность
+MIDDLE_TRACK = (45000, 15000, 10)  # Средняя трасса
+HIGH_TRACK = (60000, 20000, 20)  # Профессиональная трасса
+LIFT = (80000, 30)  # Кресельный подьемник
+KUPE_LIFT = (110000, 50)  # Кабиночный подьемник
+INCOME_NEWBIE = 2000  # Доход от новичка
+INCOME_PROFESSIONAL = 6000  # Доход от профессионала
+
+SERVICE_LIST = (
+    HOTEL, RESTAURAN, LOW_TRACK, MIDDLE_TRACK, HIGH_TRACK, LIFT, KUPE_LIFT
+)

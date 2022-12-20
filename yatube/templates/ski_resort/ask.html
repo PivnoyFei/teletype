@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}День {{ day }}{% endblock title %}
+{% block content %}
+
+    {% include 'includes/header_description.html' %}
+
+                  <div class="d-grid gap-2">
+                      {% for num in question %}
+                          {% if num and num != 'Построить что-нибудь' %}
+                              <form action="{% url 'ski_resort:ask' %}" method="post">
+                              {% csrf_token %}
+                                <div class="d-grid gap-2" role="group" aria-label="First group">
+                                  <button type="submit" name="{{ num }}" value="{{ num }}" class="btn btn-primary">{{ num }}</button>
+                                </div>
+                              </form>
+                          {%endif%}
+                          {% if num == 'Построить что-нибудь' %}
+                              <div class="d-grid gap-2" role="group" aria-label="First group">
+                                  <button type="submit" method="post" onclick="location='{% url 'ski_resort:building' %}'" class="btn btn-primary">{{ num }}</button>
+                              </div>
+                          {%endif%}
+                      {% endfor %}
+                      <div class="d-grid gap-2" role="group" aria-label="First group">
+                        <button type="submit" method="post" onclick="location='{% url 'ski_resort:ski_continue' %}'" class="btn btn-primary"> Вернутся </button>
+                      </div>
+                  </div>
+
+              {% include 'includes/statistics.html' %}
+
+    <style>
+      </style>
+      <script>
+      </script>
+{% endblock content %}

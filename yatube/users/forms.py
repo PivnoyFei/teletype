@@ -1,22 +1,27 @@
-from django.forms import ModelForm
-from django.contrib.auth import get_user_model
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from captcha.fields import CaptchaField
-
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.forms import ModelForm
 from users.models import CustomUser
 
 
 class CustomUserCreationForm(UserCreationForm):
     captcha = CaptchaField()
+
     class Meta(UserCreationForm.Meta):
         model = CustomUser
-        fields = ("first_name", "last_name", "username", "email", "gender", "birth_date")
+        fields = (
+            "first_name", "last_name", "username", "email", "gender",
+            "birth_date"
+        )
 
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
-        fields = ("username", "first_name", "last_name", "email", "gender", "birth_date")
+        fields = (
+            "username", "first_name", "last_name", "email", "gender",
+            "birth_date"
+        )
 
 
 class ProfileForm(ModelForm):

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}День {{ day }}{% endblock title %}
+{% block content %}
+    {% include 'includes/header_description.html' %}
+                <div class="d-grid gap-2">
+                      {% for num in question %}
+                          {% if num  %}
+                              <form action="{% url 'ski_resort:building' %}" method="post">
+                              {% csrf_token %}
+                                <div class="d-grid gap-2">
+                                  <button type="submit" name="{{ num }}" value="{{ num }}" class="btn btn-primary">{{ num }}</button>
+                                </div>
+                              </form>
+                          {%endif%}
+                      {% endfor %}
+                </div>
+
+                {% include 'includes/statistics.html' %}
+
+      <style>
+      </style>
+      <script>
+      </script>
+{% endblock content %}

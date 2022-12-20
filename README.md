@@ -14,7 +14,7 @@ Python 3.7, Django 2.2.19
 ### Запуск проекта в dev-режиме
 Клонируем репозиторий и переходим в него:
 ```bash
-git clone https://github.com/PivnoyFei/infra_sp2
+git clone git@github.com:PivnoyFei/yatube_project.git
 cd yatube_project
 ```
 
@@ -36,7 +36,10 @@ python -m pip install --upgrade pip
 ```bash
 pip install -r requirements.txt
 ```
-
+Переходим в папку проекта:
+```bash
+cd yatube
+```
 Выполняем миграции:
 ```bash
 python manage.py makemigrations

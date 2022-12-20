@@ -1,10 +1,12 @@
-from django.forms import ModelForm, Textarea
-from .models import Contact
 from captcha.fields import CaptchaField
+from django.forms import ModelForm, Textarea
+
+from .models import Contact
 
 
 class ContactForm(ModelForm):
     captcha = CaptchaField()
+
     class Meta:
         model = Contact
         fields = ['name', 'email', 'message']

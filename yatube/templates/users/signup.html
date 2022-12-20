@@ -53,5 +53,56 @@
       </div>
     </div>
   </div>
+  <style type="text/css">
+    {# .form-control, .form-control:focus {
+        outline: none;
+        box-shadow: none;
+        border: 0px;
+        autocomplete: off;
+    } #}
+    .form-floating, .form-group {
+      position: relative;
+    }
+
+    .password-control, .password-contro2 {
+      position: absolute;
+      top: 23px;
+      right: 45px;
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: url(https://snipp.ru/demo/495/view.svg) 0 0 no-repeat;
+    }
+    .password-control.view, .password-contro2.view {
+      background: url(https://snipp.ru/demo/495/no-view.svg) 0 0 no-repeat;
+    }
+  </style>
+  <script src="https://snipp.ru/cdn/jquery/2.1.1/jquery.min.js"></script>
+  <script>
+    function show_hide_password1(target){
+      var input = document.getElementById('id_password1');
+      if (input.getAttribute('type') == 'password') {
+        target.classList.add('view');
+        input.setAttribute('type', 'text');
+      } else {
+        target.classList.remove('view');
+        input.setAttribute('type', 'password');
+      }
+      return false;
+    }
+  </script>
+  <script>
+    function show_hide_password2(target){
+      var input = document.getElementById('id_password2');
+      if (input.getAttribute('type') == 'password') {
+        target.classList.add('view');
+        input.setAttribute('type', 'text');
+      } else {
+        target.classList.remove('view');
+        input.setAttribute('type', 'password');
+      }
+      return false;
+    }
+  </script>
   
 {% endblock content %} 

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load cache %}
+
+{% block title %}День {{ day }}{% endblock title %}
+{% block content %}
+    {% include 'includes/header_description.html' %}
+                <div class="d-grid gap-2" role="group" aria-label="First group">
+
+                        {% for num in question %}
+                          {% if num == 'Продолжить' %}
+                            <button type="submit" method="post" onclick="location='{% url 'ski_resort:ski_continue' %}'" class="btn btn-primary">Продолжить</button>
+                          {% endif %}
+
+                          {% if num == 'Всё идет отлично! Отдохнуть остаток дня' %}
+                              <form action="{% url 'ski_resort:ski_continue' %}" method="post">
+                              {% csrf_token %}
+                                <div class="d-grid gap-2">
+                                  <button type="submit" name="{{ num }}" value="{{ num }}" class="btn btn-primary">{{ num }}</button>
+                                </div>
+                              </form>
+                          {% endif %}
+                          {% if num == 'Поговорить со специалистом' %}
+                                  <button type="submit" method="post" onclick="location='{% url 'ski_resort:ask' %}'" class="btn btn-primary">{{ num }}</button>
+                          {% endif %}
+                          {% if num == 'Построить что-нибудь' %}
+                                  <button type="submit" method="post" onclick="location='{% url 'ski_resort:building' %}'" class="btn btn-primary">{{ num }}</button>
+                          {% endif %}
+
+                          {% if num == "Начать сначала" %}
+                            <button type="submit" method="post" onclick="location='{% url 'ski_resort:ski_start' %}'" class="btn btn-primary">Начать сначала</button>
+                          {% endif %}
+                        {% endfor %}
+
+                </div>
+
+              {% include 'includes/statistics.html' %}
+
+    <script>
+
+    </script>
+    <style>
+
+    </style>
+{% endblock content %}

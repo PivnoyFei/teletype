@@ -8,6 +8,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('users.urls')),
     path('auth/', include('django.contrib.auth.urls')),
+    path('ski_resort/', include('ski_resort.urls', namespace='ski_resort')),
     path('captcha/', include('captcha.urls')),
     path('about/', include('about.urls', namespace='about'))
 ]

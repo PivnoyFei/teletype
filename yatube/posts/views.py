@@ -1,11 +1,12 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.shortcuts import get_object_or_404, redirect, render
 from django.db.models import Q
+from django.shortcuts import get_object_or_404, redirect, render
 
-from .forms import PostForm, CommentForm, GroupForm
-from .models import Group, Post, CustomUser, Like, Dislike, Follow, FollowGroup, Comment
+from .forms import CommentForm, GroupForm, PostForm
+from .models import (Comment, CustomUser, Dislike, Follow, FollowGroup, Group,
+                     Like, Post)
 
 
 def count_all(count):
@@ -59,7 +60,7 @@ def group_create(request):
         group.administrator = request.user
         group.save()
         return redirect("posts:profile", group.administrator)
-    page_obj = Group.objects.filter(administrator = request.user)
+    page_obj = Group.objects.filter(administrator=request.user)
     context = {"page_obj": page_obj, "form": form}
     return render(request, "posts/group/group_create.html", context)
 
@@ -77,7 +78,7 @@ def group_edit(request, slug):
     if form.is_valid():
         form.save()
         return redirect("posts:group_edit", slug=slug)
-    page_obj = Group.objects.filter(administrator = request.user)
+    page_obj = Group.objects.filter(administrator=request.user)
     context = {"is_edit": True,
                "page_obj": page_obj,
                "group": group,
@@ -255,7 +256,7 @@ def comment_edit(request, post_id, comment_id):
 
 @login_required
 def following_list(request, username):
-    author = get_object_or_404(CustomUser, username=username)  
+    author = get_object_or_404(CustomUser, username=username)
     page_obj = author.following.all()
     context = {"is_edit": True, "page_obj": page_obj, "author": author}
     return render(request, "posts/follow/following_list.html", context)
@@ -263,7 +264,7 @@ def following_list(request, username):
 
 @login_required
 def follower_list(request, username):
-    author = get_object_or_404(CustomUser, username=username)  
+    author = get_object_or_404(CustomUser, username=username)
     page_obj = author.follower.all()
     context = {"page_obj": page_obj, "author": author}
     return render(request, "posts/follow/follower_list.html", context)

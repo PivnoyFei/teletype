@@ -1,6 +1,6 @@
 from django.forms import ModelForm, Textarea
 
-from .models import Post, Group, Comment, Message
+from .models import Comment, Group, Post
 
 
 class PostForm(ModelForm):
@@ -17,7 +17,9 @@ class PostForm(ModelForm):
             "group": "Группа, к которой будет относиться пост (Необязательно)",
             "image": "Добавить изображение к посту"
         }
-        widgets = {"text": Textarea(attrs={"placeholder": "Напишите тут тваш пост"})}
+        widgets = {
+            "text": Textarea(attrs={"placeholder": "Напишите тут тваш пост"})
+        }
 
 
 class CommentForm(ModelForm):
@@ -25,8 +27,8 @@ class CommentForm(ModelForm):
         model = Comment
         fields = ("text",)
         labels = {"text": "Текст комментария"}
-        help_texts = {"text": "Напишите тут тваш комментарий"}
-        widgets = {"text": Textarea(attrs={"placeholder": help_texts["text"]})}
+        help_texts = "Напишите тут тваш комментарий"
+        widgets = {"text": Textarea(attrs={"placeholder": help_texts})}
 
 
 class GroupForm(ModelForm):
@@ -42,6 +44,6 @@ class GroupForm(ModelForm):
         }
         help_texts = {
             "title": "Дайте короткое название группе",
-            "slug": "Адрес для страницы в браузере должен быть коротким и английскими буквами",
+            "slug": "Адрес страницы в браузере, английскими буквами",
             "description": "Дайте описание группе"
         }
