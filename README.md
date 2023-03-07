@@ -1,4 +1,4 @@
-<h1 align="center"><a target="_blank" href="https://github.com/PivnoyFei/yatube_project/">Проект yatube</a></h1>
+<h1 align="center"><a target="_blank" href="https://github.com/PivnoyFei/teletype/">Проект yatube</a></h1>
 
 ## Описание
 Мини социальная сеть на Django, где каждый зарегистрированный пользователь может кастомизировать свой профиль, оставлять посты и комментировать чужие, создавать группы, ставить лайки, дизлайки и подписываться на пользователей, группы, чтобы следить за их обновлениями в ленте.
@@ -14,7 +14,7 @@ Python 3.7, Django 2.2.19
 ### Запуск проекта в dev-режиме
 Клонируем репозиторий и переходим в него:
 ```bash
-git clone git@github.com:PivnoyFei/yatube_project.git
+git clone git@github.com:PivnoyFei/teletype.git
 cd yatube_project
 ```
 
